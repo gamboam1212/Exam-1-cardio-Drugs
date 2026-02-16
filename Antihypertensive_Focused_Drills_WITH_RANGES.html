@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Antihypertensive Focused Quiz + Ranges (Brand↔Generic • Pathways • ADE/BBW Pearls)</title>
+<style>
+  :root{
+    --bg:#0b1220; --panel:#121c31; --panel2:#0f172a; --muted:#9fb0d0; --text:#e8eefc;
+    --ok:#22c55e; --bad:#ef4444; --warn:#f59e0b; --brand:#60a5fa;
+    --chip:#1f2a44; --stroke:#223253;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial; background:linear-gradient(180deg,var(--bg),#050a14); color:var(--text)}
+  .wrap{max-width:1080px;margin:0 auto;padding:26px 18px 70px}
+  header{display:flex;gap:14px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;margin-bottom:14px}
+  h1{font-size:20px;margin:0;letter-spacing:.2px}
+  .sub{color:var(--muted);font-size:13px;line-height:1.35;max-width:760px}
+  .row{display:grid;grid-template-columns:360px 1fr;gap:14px}
+  @media (max-width: 980px){.row{grid-template-columns:1fr}}
+  .card{background:rgba(18,28,49,.92);border:1px solid var(--stroke); border-radius:16px; padding:16px; box-shadow:0 10px 30px rgba(0,0,0,.35)}
+  .card h2{font-size:14px;margin:0 0 10px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media (max-width: 560px){.grid2{grid-template-columns:1fr}}
+  .chip{display:inline-flex;gap:8px;align-items:center;padding:8px 10px;border-radius:999px;background:var(--chip);border:1px solid var(--stroke);color:var(--muted);font-size:12px}
+  .chip b{color:var(--text)}
+  .controls{display:flex;gap:10px;flex-wrap:wrap}
+  button{border:0;border-radius:12px;padding:10px 12px;font-weight:650;cursor:pointer;background:var(--brand);color:#061226}
+  button.secondary{background:#223253;color:var(--text);border:1px solid var(--stroke)}
+  button.ghost{background:transparent;color:var(--text);border:1px solid var(--stroke)}
+  button.danger{background:var(--bad);color:#fff}
+  button:disabled{opacity:.55;cursor:not-allowed}
+  select, input[type="text"], input[type="number"]{
+    width:100%;background:var(--panel2);color:var(--text);
+    border:1px solid var(--stroke); border-radius:12px; padding:10px 12px; outline:none
+  }
+  label{display:block;color:var(--muted);font-size:12px;margin:6px 0 6px}
+  .qbox{padding:16px;border-radius:16px;background:rgba(15,23,42,.65);border:1px solid var(--stroke)}
+  .qmeta{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+  .qmeta .left{display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:11px;padding:6px 9px;border-radius:999px;border:1px solid var(--stroke);background:#0d162a;color:var(--muted)}
+  .tag.ok{color:#b7f7c9;border-color:#1d7a3a;background:rgba(34,197,94,.12)}
+  .tag.bad{color:#ffd0d0;border-color:#7f1d1d;background:rgba(239,68,68,.12)}
+  .tag.warn{color:#ffe6b3;border-color:#925e09;background:rgba(245,158,11,.12)}
+  .qtext{font-size:18px;line-height:1.35;margin:4px 0 14px}
+  .options{display:grid;gap:10px}
+  .opt{padding:12px 12px;border-radius:14px;border:1px solid var(--stroke);background:#0e1930;cursor:pointer}
+  .opt:hover{background:#122142}
+  .opt.correct{border-color:#1d7a3a;background:rgba(34,197,94,.16)}
+  .opt.incorrect{border-color:#7f1d1d;background:rgba(239,68,68,.16)}
+  .explain{margin-top:12px;padding:12px;border-radius:14px;border:1px dashed #2b3e66;background:rgba(2,6,23,.35);color:#dbe7ff}
+  .explain .src{color:var(--muted);font-size:12px;margin-top:6px}
+  .bar{height:10px;background:#0b1428;border:1px solid var(--stroke);border-radius:999px;overflow:hidden}
+  .bar > div{height:100%;background:linear-gradient(90deg,#60a5fa,#22c55e);width:0%}
+  .footerNote{margin-top:10px;color:var(--muted);font-size:12px;line-height:1.45}
+  .small{font-size:12px;color:var(--muted);line-height:1.45}
+  code.k{background:rgba(2,6,23,.35);border:1px solid var(--stroke);padding:2px 6px;border-radius:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Antihypertensive Focused Quiz + Dose Ranges</h1>
+      <div class="sub">
+        Drills: (1) Brand → Generic, (2) Generic → Brand, (3) Brand+Generic → Pathway/Target,
+        (4) Class → Common ADEs + BBW/pearls, (5) Dose ranges (only for drugs that have a range listed in your course table/Dr. Jamal HTN materials).
+        Missed questions repeat adaptively. Any listed dose range is shown **bolded**.
+      </div>
+      <div class="footerNote">
+        Ranges are generated <b>only</b> for drugs where a range appears in the handout text (the same ones that were boxed/squared in your HTN table).
+      </div>
+    </div>
+    <div class="controls">
+      <button id="btnStart" onclick="start()">Start</button>
+      <button class="secondary" id="btnNext" onclick="nextQ()" disabled>Next</button>
+      <button class="ghost" id="btnPause" onclick="pauseToggle()" disabled>Pause</button>
+      <button class="danger" onclick="resetAll()">Reset</button>
+    </div>
+  </header>
+
+  <div class="row">
+    <div class="card">
+      <h2>Build Your Drill</h2>
+      <div class="grid2">
+        <div>
+          <label>Drill Type</label>
+          <select id="drill">
+            <option value="all" selected>All (5 drills mixed)</option>
+            <option value="bg">Brand → Generic</option>
+            <option value="gb">Generic → Brand</option>
+            <option value="path">Brand+Generic → Pathway/Target</option>
+            <option value="class_ade">Class → ADE/BBW Pearls</option>
+            <option value="range">Dose ranges (only drugs with listed ranges)</option>
+          </select>
+        </div>
+        <div>
+          <label>Section Filter</label>
+          <select id="section">
+            <option value="all" selected>All classes</option>
+            <option value="raas">RAAS (ACEi/ARB/Renin)</option>
+            <option value="ccb">CCBs</option>
+            <option value="diuretics">Diuretics</option>
+            <option value="symp">Sympatholytics</option>
+            <option value="vaso">Direct vasodilators</option>
+          </select>
+        </div>
+        <div>
+          <label>Question count target</label>
+          <input id="target" type="number" min="40" max="800" value="260" />
+        </div>
+        <div>
+          <label>Adaptive repetition</label>
+          <select id="adaptive">
+            <option value="on" selected>On (missed repeat)</option>
+            <option value="off">Off</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="margin-top:14px" class="chip"><b id="bank">0</b> questions loaded</div>
+      <div id="selftest" class="footerNote"></div>
+
+      <div class="footerNote">
+        GitHub Pages: rename this file to <code class="k">index.html</code> to serve at your repo root.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="qmeta">
+        <div class="left">
+          <span class="chip"><b id="progress">0/0</b> done</span>
+          <span class="chip"><b id="score">0</b> correct</span>
+          <span class="chip"><b id="streak">0</b> streak</span>
+        </div>
+        <div class="chip"><b id="modeNow">—</b></div>
+      </div>
+      <div class="bar"><div id="barFill"></div></div>
+
+      <div id="panel" class="qbox" style="margin-top:12px"></div>
+      <div id="missedBox" class="qbox" style="margin-top:12px;display:none"></div>
+      <div class="small" style="margin-top:10px">
+        Tip: keep Adaptive ON if you want “wrong ones come back”.
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const SOURCES = {
+  table: "Antihypertensive Drug Table (course handout / Dr. Jamal emphasis)",
+  pharm: "PHAR 518 Antihypertensives & Sympatholytics Pharmacology",
+  htn: "PHAR 518 Hypertension (Student Version)",
+  revq: "PHAR 518 HTN Review Questions (Student Version)"
+};
+
+const DRUGS = {
+  acei: [
+    {gen:"Benazepril", brand:"Lotensin"},
+    {gen:"Captopril", brand:"Capoten"},
+    {gen:"Enalapril", brand:"Vasotec"},
+    {gen:"Fosinopril", brand:"Monopril"},
+    {gen:"Lisinopril", brand:"Prinivil, Zestril", range:"10–40 mg/day"},
+    {gen:"Moexipril", brand:"Univasc"},
+    {gen:"Perindopril", brand:"Aceon"},
+    {gen:"Quinapril", brand:"Accupril"},
+    {gen:"Ramipril", brand:"Altace"},
+    {gen:"Trandolapril", brand:"Mavik"}
+  ],
+  arbs: [
+    {gen:"Azilsartan", brand:"Edarbi"},
+    {gen:"Candesartan", brand:"Atacand"},
+    {gen:"Eprosartan", brand:"Teveten"},
+    {gen:"Irbesartan", brand:"Avapro"},
+    {gen:"Losartan", brand:"Cozaar", range:"50–100 mg/day"},
+    {gen:"Telmisartan", brand:"Micardis"},
+    {gen:"Olmesartan", brand:"Benicar"},
+    {gen:"Valsartan", brand:"Diovan", range:"80–320 mg/day"}
+  ],
+  renin: [{gen:"Aliskiren", brand:"Tekturna"}],
+  ccb_dhp: [
+    {gen:"Amlodipine", brand:"Norvasc", range:"2.5–10 mg/day"},
+    {gen:"Felodipine", brand:"Plendil"},
+    {gen:"Nifedipine (long acting)", brand:"Adalat CC, Procardia XL"},
+    {gen:"Nisoldipine", brand:"Sular"},
+    {gen:"Nicardipine", brand:"Cardene IV"},
+    {gen:"Isradipine", brand:"(brand not listed)"},
+    {gen:"Clevidipine", brand:"Cleviprex IV"}
+  ],
+  ccb_non: [{gen:"Diltiazem", brand:"Cardizem"},{gen:"Verapamil", brand:"Calan"}],
+  thiazide: [
+    {gen:"Chlorothiazide", brand:"Diuril"},
+    {gen:"Chlorthalidone", brand:"Thalitone", range:"12.5–25 mg/day"},
+    {gen:"Hydrochlorothiazide", brand:"Microzide", range:"25–50 mg/day"},
+    {gen:"Indapamide", brand:"Lozol"},
+    {gen:"Metolazone", brand:"Zaroxolyn"}
+  ],
+  loop: [{gen:"Bumetanide", brand:"Bumex"},{gen:"Torsemide", brand:"Demadex"},{gen:"Furosemide", brand:"Lasix"},{gen:"Ethacrynic Acid", brand:"Edecrin"}],
+  k_sparing: [{gen:"Amiloride", brand:"Midamor"},{gen:"Amiloride + hydrochlorothiazide", brand:"Moduretic"},{gen:"Triamterene", brand:"Dyrenium"},{gen:"Triamterene + hydrochlorothiazide", brand:"Dyazide, Maxide"}],
+  mra: [
+    {gen:"Spironolactone", brand:"Aldactone", range:"25–50 mg PO qd"},
+    {gen:"Eplerenone", brand:"Inspra"}
+  ],
+  beta1_sel: [
+    {gen:"Atenolol", brand:"Tenormin"},
+    {gen:"Betaxolol", brand:"Kerlone"},
+    {gen:"Bisoprolol", brand:"Zebeta"},
+    {gen:"Metoprolol tartrate", brand:"Lopressor", range:"100–200 mg/day"},
+    {gen:"Metoprolol succinate", brand:"Toprol XL", range:"50–200 mg/day"},
+    {gen:"Nebivolol", brand:"Bystolic"},
+    {gen:"Esmolol", brand:"Breviblock"}
+  ],
+  beta_non: [{gen:"Nadolol", brand:"Corgard"},{gen:"Propranolol", brand:"Inderal"},{gen:"Timolol", brand:"Blocadren"}],
+  beta_mixed: [
+    {gen:"Carvedilol", brand:"Coreg"},
+    {gen:"Labetalol", brand:"Normodyne, Trandate", range:"200–800 mg/day"}
+  ],
+  alpha1: [{gen:"Doxazosin", brand:"Cardura"},{gen:"Prazosin", brand:"Minipress"},{gen:"Terazosin", brand:"Hytrin"}],
+  alpha2: [{gen:"Clonidine", brand:"Catapres"},{gen:"Guanfacine", brand:"Tenex"},{gen:"Methyldopa", brand:"Aldomet"}],
+  vasodilators: [{gen:"Hydralazine", brand:"Apresoline"},{gen:"Minoxidil", brand:"Loniten"}]
+};
+
+const FACTS = {
+  acei:{class:"ACE inhibitors",pathway:"RAAS: blocks ACE step (Ang I → Ang II).",ades:["Dry cough","Angioedema","Hyperkalemia","First-dose hypotension","AKI risk (↓ GFR via efferent dilation)","Rash"],pearls:["↑ Bradykinin explains cough/angioedema","Avoid/stop in pregnancy (fetopathy)","Watch renal function (esp bilateral renal artery stenosis)"]},
+  arbs:{class:"Angiotensin receptor blockers (ARBs)",pathway:"RAAS: blocks Ang II action at AT1 receptor.",ades:["Hyperkalemia","First-dose hypotension","Rash","Less angioedema vs ACEi (comparative note)"],pearls:["Avoid/stop in pregnancy (fetopathy)","No bradykinin increase like ACEi (so less cough/angioedema)"]},
+  renin:{class:"Direct renin inhibitor",pathway:"RAAS: blocks renin step (angiotensinogen → Ang I).",ades:["Hyperkalemia","First-dose hypotension","Rash","Angioedema (lower risk than ACEi in notes)"],pearls:["Do NOT combine with ACEi/ARB (course warning)","Avoid/stop in pregnancy (fetopathy)"]},
+  ccb_dhp:{class:"Calcium channel blockers (DHP)",pathway:"Blocks L-type Ca2+ entry in vascular smooth muscle → vasodilation.",ades:["Hypotension (dizziness/flushing/headache)","Reflex tachycardia (esp IV)","Gingival hyperplasia","GI complaints","Mood changes","Constipation (can occur)"],pearls:["Prefer long-acting agents for chronic HTN","DHPs mainly vascular; non-DHPs mainly cardiac"]},
+  ccb_non:{class:"Calcium channel blockers (non-DHP)",pathway:"Blocks Ca2+ entry in SA/AV nodes + myocardium → ↓ HR/AV conduction.",ades:["Bradycardia/AV block","Constipation (notably verapamil)","Worsened HF (negative inotropy)"],pearls:["Caution with beta blockers (additive brady/AV block)","Drug interaction potential (CYP effects in notes)"]},
+  thiazide:{class:"Thiazide diuretics",pathway:"Nephron: DCT NCC (Na/Cl transporter) blockade.",ades:["Hypokalemia","Hyponatremia","Hyperuricemia","Hyperglycemia","Hyperlipidemia","QT prolongation (via low K)"],pearls:["↑ Ca reabsorption (DCT)","Common first-line option in HTN teaching"]},
+  loop:{class:"Loop diuretics",pathway:"Nephron: thick ascending limb NKCC2 blockade.",ades:["Ototoxicity","Dehydration","Hypokalemia","Hypomagnesemia","Hypocalcemia","Hyperuricemia"],pearls:["Powerful diuresis; used more for volume overload states"]},
+  k_sparing:{class:"K+-sparing diuretics (ENaC blockers)",pathway:"Nephron: late DCT/collecting duct ENaC blockade.",ades:["Hyperkalemia (BBW/major risk)","Electrolyte abnormalities"],pearls:["K-sparing—pair to reduce K loss from other diuretics","Avoid stacking K-raising drugs if hyperK risk"]},
+  mra:{class:"Mineralocorticoid receptor antagonists",pathway:"Blocks aldosterone effect at mineralocorticoid receptor.",ades:["Hyperkalemia","Gynecomastia (spironolactone)"],pearls:["Useful in resistant HTN/aldosterone-driven states (common teaching)","Eplerenone: more selective → less gynecomastia"]},
+  beta:{class:"Beta blockers",pathway:"Sympathetic: β1 blockade in heart; some agents have β2 and/or α effects.",ades:["Bradycardia","Fatigue","Sexual dysfunction","Bronchoconstriction (nonselective)","Masked/prolonged hypoglycemia (nonselective)","Rebound tachy/HTN if abrupt stop"],pearls:["Avoid nonselective in reactive airway disease","Taper—don’t stop abruptly","Nebivolol → ↑ NO (vasodilation)"]},
+  alpha1:{class:"Alpha-1 blockers",pathway:"Sympathetic: α1 blockade on vascular smooth muscle.",ades:["First-dose syncope","Orthostatic hypotension","Dizziness"],pearls:["Useful if concurrent BPH","Not preferred as monotherapy (CHF risk note in some courses)"]},
+  alpha2:{class:"Alpha-2 agonists",pathway:"Central α2 agonism → ↓ norepinephrine release/sympathetic outflow.",ades:["Sedation","Dry mouth","Bradycardia","Depression","Rebound hypertension if abrupt stop"],pearls:["Don’t stop abruptly (rebound)","Methyldopa: classic pregnancy option (common teaching)"]},
+  vasodilators:{class:"Direct vasodilators",pathway:"Hydralazine: ↑ NO/cGMP; Minoxidil: K+ channel opener → ↓ Ca2+ entry.",ades:["Headache/flushing","Reflex tachycardia/angina","Salt/water retention","Hydralazine-induced lupus","Minoxidil hypertrichosis"],pearls:["Often need combo (diuretic + beta blocker) to blunt fluid retention + reflex tachy","Minoxidil: notable hair growth effect"]}
+};
+
+function escapeHtml(s){
+  return String(s ?? "")
+    .replaceAll('&','&amp;')
+    .replaceAll('<','&lt;')
+    .replaceAll('>','&gt;')
+    .replaceAll('"','&quot;')
+    .replaceAll("'",'&#039;');
+}
+function renderRich(s){
+  const escaped = escapeHtml(s);
+  return escaped.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
+}
+function randInt(n){ return Math.floor(Math.random()*n); }
+function shuffle(arr){ for(let i=arr.length-1;i>0;i--){ const j=randInt(i+1); [arr[i],arr[j]]=[arr[j],arr[i]]; } return arr; }
+function uniq(arr){ return [...new Set(arr)]; }
+function pick(arr){ return arr[randInt(arr.length)]; }
+function clamp(x,a,b){ return Math.max(a, Math.min(b, x)); }
+
+function flatDrugs(){
+  const out=[];
+  Object.values(DRUGS).forEach(list=>list.forEach(d=>out.push(d)));
+  return out;
+}
+const ALL = flatDrugs();
+
+function bucketKeyForFacts(bucket){
+  if(bucket==="acei") return "acei";
+  if(bucket==="arbs") return "arbs";
+  if(bucket==="renin") return "renin";
+  if(bucket==="ccb_dhp") return "ccb_dhp";
+  if(bucket==="ccb_non") return "ccb_non";
+  if(bucket==="thiazide") return "thiazide";
+  if(bucket==="loop") return "loop";
+  if(bucket==="k_sparing") return "k_sparing";
+  if(bucket==="mra") return "mra";
+  if(bucket.startsWith("beta")) return "beta";
+  if(bucket==="alpha1") return "alpha1";
+  if(bucket==="alpha2") return "alpha2";
+  if(bucket==="vasodilators") return "vasodilators";
+  return null;
+}
+function sectionBuckets(section){
+  return {
+    raas:["acei","arbs","renin"],
+    ccb:["ccb_dhp","ccb_non"],
+    diuretics:["thiazide","loop","k_sparing","mra"],
+    symp:["beta1_sel","beta_non","beta_mixed","alpha1","alpha2"],
+    vaso:["vasodilators"],
+    all:Object.keys(DRUGS)
+  }[section] || Object.keys(DRUGS);
+}
+
+function makeMCQ(q, correct, wrongs, explain, src, tags=[]){
+  const options = shuffle([correct, ...wrongs]).slice(0,4);
+  const answerIndex = options.indexOf(correct);
+  return {type:"mcq", q, options, answerIndex, explain, src, tags};
+}
+
+function distractorGenerics(correctGen){
+  const pool = ALL.filter(d=>d.gen!==correctGen && d.brand && d.brand!=="(brand not listed)");
+  return uniq(shuffle(pool).slice(0,3).map(d=>d.gen));
+}
+function distractorBrands(correctBrand){
+  const pool = ALL.filter(d=>d.brand!==correctBrand && d.brand && d.brand!=="(brand not listed)");
+  return uniq(shuffle(pool).slice(0,3).map(d=>d.brand));
+}
+function allRanges(){
+  return uniq(ALL.filter(d=>d.range).map(d=>d.range));
+}
+
+function generate(drill="all", section="all"){
+  const qs=[];
+  const buckets = sectionBuckets(section);
+
+  buckets.forEach(bucket=>{
+    const fkey = bucketKeyForFacts(bucket);
+    const fact = fkey ? FACTS[fkey] : null;
+
+    DRUGS[bucket].forEach(d=>{
+      const hasBrand = d.brand && d.brand!=="(brand not listed)";
+
+      if(hasBrand && (drill==="all" || drill==="bg")){
+        qs.push(makeMCQ(
+          `Brand → Generic: ${d.brand}`,
+          d.gen,
+          distractorGenerics(d.gen),
+          `${d.gen} is paired with ${d.brand} in your antihypertensive materials.`,
+          SOURCES.table,
+          ["brand→generic", bucket]
+        ));
+      }
+
+      if(hasBrand && (drill==="all" || drill==="gb")){
+        qs.push(makeMCQ(
+          `Generic → Brand: ${d.gen}`,
+          d.brand,
+          distractorBrands(d.brand),
+          `${d.gen} corresponds to brand ${d.brand} in your antihypertensive materials.`,
+          SOURCES.table,
+          ["generic→brand", bucket]
+        ));
+      }
+
+      if(hasBrand && fact && (drill==="all" || drill==="path")){
+        const allPaths = uniq(Object.values(FACTS).map(x=>x.pathway));
+        const wrongP = shuffle(allPaths.filter(p=>p!==fact.pathway)).slice(0,3);
+        qs.push(makeMCQ(
+          `Pathway/Target: ${d.brand} (${d.gen}) acts primarily where?`,
+          fact.pathway,
+          wrongP,
+          `This drug’s class target/pathway is taught as: ${fact.pathway}`,
+          SOURCES.pharm,
+          ["drug→pathway", bucket]
+        ));
+      }
+
+      if(hasBrand && d.range && (drill==="all" || drill==="range")){
+        const ranges = allRanges();
+        const wrongR = shuffle(ranges.filter(r=>r!==d.range)).slice(0,3);
+        qs.push(makeMCQ(
+          `Dose range (listed): ${d.brand} (${d.gen})`,
+          d.range,
+          wrongR,
+          `The listed range in the HTN handout for ${d.gen} is **${d.range}**.`,
+          SOURCES.table,
+          ["dose-range", bucket]
+        ));
+      }
+    });
+  });
+
+  if(drill==="all" || drill==="class_ade"){
+    const fkeys = uniq(buckets.map(bucketKeyForFacts).filter(Boolean));
+    const allClasses = uniq(Object.values(FACTS).map(x=>x.class));
+    const allADE = uniq(Object.values(FACTS).flatMap(x=>x.ades));
+    const allPearls = uniq(Object.values(FACTS).flatMap(x=>x.pearls));
+
+    fkeys.forEach(k=>{
+      const F = FACTS[k];
+
+      const correctADE = pick(F.ades);
+      const wrongADE = shuffle(allADE.filter(a=>a!==correctADE)).slice(0,3);
+      qs.push(makeMCQ(
+        `Class → Common ADE: Which adverse effect is associated with ${F.class}?`,
+        correctADE,
+        wrongADE,
+        `A common ADE/BBW-level concern taught for ${F.class} includes: ${correctADE}`,
+        SOURCES.htn,
+        ["class→ADE", k]
+      ));
+
+      const correctPearl = pick(F.pearls);
+      const wrongPearl = shuffle(allPearls.filter(p=>p!==correctPearl)).slice(0,3);
+      qs.push(makeMCQ(
+        `Class → Pearl/BBW: Which pearl is associated with ${F.class}?`,
+        correctPearl,
+        wrongPearl,
+        `A high-yield pearl for ${F.class} includes: ${correctPearl}`,
+        SOURCES.revq,
+        ["class→pearl", k]
+      ));
+
+      const wrongClasses = shuffle(allClasses.filter(c=>c!==F.class)).slice(0,3);
+      qs.push(makeMCQ(
+        `Reverse: Which class best matches this clue? "${correctADE}"`,
+        F.class,
+        wrongClasses,
+        `That clue is a hallmark/commonly taught ADE for ${F.class}.`,
+        SOURCES.pharm,
+        ["ADE→class", k]
+      ));
+    });
+  }
+
+  return shuffle(qs);
+}
+
+let BANK=[], QUEUE=[], MISSED=[];
+let done=0, correct=0, streak=0, paused=false, current=null, answered=false;
+
+function modeLabel(drill){
+  return {
+    all:"Mixed (5 drills)",
+    bg:"Brand → Generic",
+    gb:"Generic → Brand",
+    path:"Brand+Generic → Pathway",
+    class_ade:"Class → ADE/BBW Pearls",
+    range:"Dose ranges (listed only)"
+  }[drill] || "—";
+}
+
+function start(){
+  const drill = document.getElementById('drill').value;
+  const section = document.getElementById('section').value;
+  const target = clamp(parseInt(document.getElementById('target').value,10)||260, 40, 800);
+
+  BANK = generate(drill, section);
+
+  let picked = [...BANK];
+  if(picked.length > target) picked = picked.slice(0, target);
+  while(picked.length < target){
+    picked.push(...shuffle(BANK).slice(0, Math.min(60, target-picked.length)));
+  }
+
+  QUEUE = picked.map((q,i)=>({q,id:i,weight:1,seen:0,wrong:0}));
+  shuffle(QUEUE);
+
+  MISSED=[]; done=0; correct=0; streak=0; paused=false; current=null; answered=false;
+
+  document.getElementById('bank').innerText = String(picked.length);
+  document.getElementById('modeNow').innerText = modeLabel(drill);
+  document.getElementById('btnNext').disabled = true;
+  document.getElementById('btnPause').disabled = false;
+  document.getElementById('btnPause').innerText = 'Pause';
+  document.getElementById('missedBox').style.display = 'none';
+
+  nextQ(true);
+}
+
+function pauseToggle(){
+  paused = !paused;
+  document.getElementById('btnPause').innerText = paused ? 'Resume' : 'Pause';
+}
+
+function resetAll(){
+  BANK=[]; QUEUE=[]; MISSED=[];
+  done=0; correct=0; streak=0; paused=false; current=null; answered=false;
+  document.getElementById('panel').innerHTML = "<div class='small'>Click <b>Start</b> to begin your focused drill.</div>";
+  document.getElementById('bank').innerText = "0";
+  hud();
+  document.getElementById('btnNext').disabled = true;
+  document.getElementById('btnPause').disabled = true;
+  document.getElementById('modeNow').innerText = "—";
+  document.getElementById('barFill').style.width = "0%";
+  document.getElementById('missedBox').style.display = 'none';
+}
+
+function pullNext(){
+  const adaptive = document.getElementById('adaptive').value === 'on';
+  if(!QUEUE.length) return null;
+  if(!adaptive) return QUEUE.shift();
+
+  let total=0; for(const it of QUEUE) total += it.weight;
+  let r = Math.random()*total;
+  for(let i=0;i<QUEUE.length;i++){
+    r -= QUEUE[i].weight;
+    if(r<=0) return QUEUE.splice(i,1)[0];
+  }
+  return QUEUE.shift();
+}
+
+function nextQ(force=false){
+  if(paused && !force) return;
+  answered=false;
+  document.getElementById('btnNext').disabled = true;
+
+  const it = pullNext();
+  if(!it){
+    document.getElementById('panel').innerHTML = `<h3 style="margin:0 0 10px">Finished</h3>
+      <div class="small">No more questions in queue. Hit <b>Reset</b> then <b>Start</b> to run another drill set.</div>`;
+    showMissed();
+    hud();
+    return;
+  }
+  current = it;
+  current.seen += 1;
+  render(it);
+  hud();
+}
+
+function hud(){
+  const total = done + QUEUE.length + (current && !answered ? 1 : 0);
+  document.getElementById('progress').innerText = `${done}/${Math.max(total,0)}`;
+  document.getElementById('score').innerText = `${correct}`;
+  document.getElementById('streak').innerText = `${streak}`;
+  const pct = total ? Math.round((done/total)*100) : 0;
+  document.getElementById('barFill').style.width = pct + "%";
+}
+
+function render(it){
+  const q = it.q;
+  const panel = document.getElementById('panel');
+
+  const meta = `<div class="qmeta">
+    <div class="left">
+      ${(q.tags||[]).slice(0,4).map(t=>`<span class="tag">${escapeHtml(t)}</span>`).join('')}
+    </div>
+    <div>
+      <span class="tag warn">Seen: ${it.seen}</span>
+      ${it.wrong?`<span class="tag bad">Missed: ${it.wrong}</span>`:''}
+    </div>
+  </div>`;
+
+  const opts = (q.options||[]).map((opt, idx)=>`<div class="opt" onclick="submit(${idx})">${renderRich(opt)}</div>`).join('');
+
+  panel.innerHTML = `${meta}
+    <div class="qtext">${renderRich(q.q)}</div>
+    <div class="options">${opts}</div>
+    <div id="fb"></div>`;
+}
+
+function submit(choice){
+  if(!current || answered) return;
+  const q = current.q;
+  const opts = Array.from(document.querySelectorAll('.opt'));
+
+  const correctIdx = q.answerIndex;
+  const ok = choice === correctIdx;
+
+  answered=true;
+  done++;
+
+  if(ok){
+    correct++; streak++;
+    opts[choice]?.classList.add('correct');
+    current.weight = Math.max(1, current.weight - 0.25);
+  }else{
+    streak=0;
+    current.wrong += 1;
+    opts[choice]?.classList.add('incorrect');
+    opts[correctIdx]?.classList.add('correct');
+
+    MISSED.push({q:q.q, tags:q.tags||[], src:q.src});
+    const adaptive = document.getElementById('adaptive').value === 'on';
+    if(adaptive){
+      current.weight = Math.min(6, current.weight + 1.25);
+      const insertAt = Math.min(QUEUE.length, 6 + randInt(12));
+      QUEUE.splice(insertAt, 0, current);
+    }
+  }
+
+  document.getElementById('fb').innerHTML =
+    `<div class="explain">${renderRich(q.explain)}<div class="src">Source: ${escapeHtml(q.src)}</div></div>`;
+
+  document.getElementById('btnNext').disabled = false;
+  hud();
+  showMissed();
+}
+
+function showMissed(){
+  const box = document.getElementById('missedBox');
+  if(!MISSED.length){
+    box.style.display = 'none';
+    return;
+  }
+  box.style.display = 'block';
+  const last = MISSED.slice(-10).reverse();
+  box.innerHTML = `<div class="small"><b>Recent missed</b> (last ${last.length})</div>` +
+    last.map(m=>`<div class="explain" style="margin-top:10px">
+      <div style="font-weight:800;margin-bottom:6px">${renderRich(m.q).slice(0,220)}${m.q.length>220?'…':''}</div>
+      <div class="src">Tags: ${(m.tags||[]).map(escapeHtml).join(', ')} • Source: ${escapeHtml(m.src)}</div>
+    </div>`).join('');
+}
+
+function assert(cond, msg){ if(!cond) throw new Error(msg); }
+function runSelfTests(){
+  const qs = generate("all","all");
+  assert(qs.length > 140, "Question bank too small");
+  const ranges = ALL.filter(d=>d.range).length;
+  assert(ranges >= 8, "Expected dose ranges missing");
+  const mcq = qs.filter(x=>x.type==="mcq");
+  for(const q of mcq){
+    assert(Number.isInteger(q.answerIndex), "Missing answerIndex");
+    assert(q.options && q.options.length>=2, "Missing options");
+    assert(q.answerIndex>=0 && q.answerIndex<q.options.length, "answerIndex out of range");
+  }
+  return `Self-tests passed: ${qs.length} questions available; ${ranges} drugs with listed dose ranges.`;
+}
+function showSelfTest(){
+  const el = document.getElementById('selftest');
+  try{
+    const msg = runSelfTests();
+    el.innerHTML = `<span class="tag ok">OK</span> ${escapeHtml(msg)}`;
+    console.log("[SELFTEST]", msg);
+  }catch(e){
+    el.innerHTML = `<span class="tag bad">FAIL</span> ${escapeHtml(e.message)}`;
+    console.error("[SELFTEST FAIL]", e);
+  }
+}
+
+resetAll();
+showSelfTest();
+</script>
+</body>
+</html>
