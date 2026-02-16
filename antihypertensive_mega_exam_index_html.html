@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Antihypertensive Mega Exam (Adaptive + Diagrams)</title>
+<style>
+  :root{
+    --bg:#0b1220; --panel:#121c31; --panel2:#0f172a; --muted:#9fb0d0; --text:#e8eefc;
+    --ok:#22c55e; --bad:#ef4444; --warn:#f59e0b; --brand:#60a5fa;
+    --chip:#1f2a44; --stroke:#223253;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial; background:linear-gradient(180deg,var(--bg),#050a14); color:var(--text)}
+  a{color:var(--brand)}
+  .wrap{max-width:1180px;margin:0 auto;padding:26px 18px 80px}
+  header{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:18px}
+  .title{display:flex;flex-direction:column;gap:6px}
+  h1{font-size:22px;margin:0;letter-spacing:.2px}
+  .sub{color:var(--muted);font-size:13px;line-height:1.35}
+  .row{display:grid;grid-template-columns:360px 1fr;gap:14px}
+  @media (max-width: 980px){.row{grid-template-columns:1fr}}
+
+  .card{background:rgba(18,28,49,.92);border:1px solid var(--stroke); border-radius:16px; padding:16px; box-shadow:0 10px 30px rgba(0,0,0,.35)}
+  .card h2{font-size:15px;margin:0 0 10px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media (max-width: 560px){.grid2{grid-template-columns:1fr}}
+
+  .chip{display:inline-flex;gap:8px;align-items:center;padding:8px 10px;border-radius:999px;background:var(--chip);border:1px solid var(--stroke);color:var(--muted);font-size:12px}
+  .chip b{color:var(--text)}
+
+  .controls{display:flex;gap:10px;flex-wrap:wrap}
+  button{border:0;border-radius:12px;padding:10px 12px;font-weight:650;cursor:pointer;background:var(--brand);color:#061226}
+  button.secondary{background:#223253;color:var(--text);border:1px solid var(--stroke)}
+  button.ghost{background:transparent;color:var(--text);border:1px solid var(--stroke)}
+  button.danger{background:var(--bad);color:#fff}
+  button:disabled{opacity:.55;cursor:not-allowed}
+
+  .sel, select, input[type="text"], input[type="number"]{
+    width:100%;background:var(--panel2);color:var(--text);
+    border:1px solid var(--stroke); border-radius:12px; padding:10px 12px; outline:none
+  }
+  label{display:block;color:var(--muted);font-size:12px;margin:6px 0 6px}
+
+  .qbox{padding:16px;border-radius:16px;background:rgba(15,23,42,.65);border:1px solid var(--stroke)}
+  .qmeta{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+  .qmeta .left{display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:11px;padding:6px 9px;border-radius:999px;border:1px solid var(--stroke);background:#0d162a;color:var(--muted)}
+  .tag.ok{color:#b7f7c9;border-color:#1d7a3a;background:rgba(34,197,94,.12)}
+  .tag.bad{color:#ffd0d0;border-color:#7f1d1d;background:rgba(239,68,68,.12)}
+  .tag.warn{color:#ffe6b3;border-color:#925e09;background:rgba(245,158,11,.12)}
+
+  .qtext{font-size:18px;line-height:1.35;margin:4px 0 14px}
+  .options{display:grid;gap:10px}
+  .opt{padding:12px 12px;border-radius:14px;border:1px solid var(--stroke);background:#0e1930;cursor:pointer}
+  .opt:hover{background:#122142}
+  .opt.correct{border-color:#1d7a3a;background:rgba(34,197,94,.16)}
+  .opt.incorrect{border-color:#7f1d1d;background:rgba(239,68,68,.16)}
+
+  .explain{margin-top:12px;padding:12px;border-radius:14px;border:1px dashed #2b3e66;background:rgba(2,6,23,.35);color:#dbe7ff}
+  .explain .src{color:var(--muted);font-size:12px;margin-top:6px}
+
+  .bar{height:10px;background:#0b1428;border:1px solid var(--stroke);border-radius:999px;overflow:hidden}
+  .bar > div{height:100%;background:linear-gradient(90deg,#60a5fa,#22c55e);width:0%}
+
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 0}
+  .tab{padding:8px 10px;border-radius:999px;border:1px solid var(--stroke);background:#0d162a;color:var(--muted);cursor:pointer;font-size:12px}
+  .tab.active{background:rgba(96,165,250,.18);color:var(--text);border-color:#2b5aa7}
+
+  .diagram{margin-top:12px;padding:12px;border-radius:16px;border:1px solid var(--stroke);background:rgba(2,6,23,.35)}
+  .diagram pre{white-space:pre-wrap;margin:0;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:12px;line-height:1.35;color:#d6e3ff}
+  .note{color:var(--muted);font-size:12px;line-height:1.45}
+
+  .footerNote{margin-top:10px;color:var(--muted);font-size:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="title">
+      <h1>Antihypertensive Mega Exam Engine</h1>
+      <div class="sub">
+        Adaptive (missed questions repeat), MCQ + Fill‑Blank + Vignettes + Pathway Visualization Mode.
+        Built strictly from your table (Antihypertensive Drug Table Blank PDF). Source refs are shown per question as page numbers.
+      </div>
+    </div>
+    <div class="controls">
+      <button id="btnStart" onclick="startExam()">Start</button>
+      <button class="secondary" onclick="nextQuestion()" id="btnNext" disabled>Next</button>
+      <button class="ghost" onclick="togglePause()" id="btnPause" disabled>Pause</button>
+      <button class="danger" onclick="resetAll()">Reset</button>
+    </div>
+  </header>
+
+  <div class="row">
+    <div class="card">
+      <h2>Build Your Exam</h2>
+      <div class="grid2">
+        <div>
+          <label>Mode</label>
+          <select id="mode" class="sel">
+            <option value="mixed" selected>Mixed (All 4)</option>
+            <option value="mcq">MCQ only</option>
+            <option value="fill">Fill‑in only</option>
+            <option value="vignette">Vignettes only</option>
+            <option value="path">Pathway visualization only</option>
+          </select>
+        </div>
+        <div>
+          <label>Question count target</label>
+          <input id="targetCount" type="number" min="20" max="600" value="220" />
+        </div>
+        <div>
+          <label>Sections included</label>
+          <select id="section" class="sel">
+            <option value="all" selected>All antihypertensive content</option>
+            <option value="raas">RAAS drugs (ACEi/ARB/Renin inhibitor)</option>
+            <option value="ccb">CCBs (DHP + non‑DHP)</option>
+            <option value="diuretics">Diuretics (thiazide/loop/K‑sparing/MRA)</option>
+            <option value="symp">Sympatholytics (β/α1/α2)</option>
+            <option value="vasodilators">Direct vasodilators</option>
+          </select>
+        </div>
+        <div>
+          <label>Difficulty</label>
+          <select id="difficulty" class="sel">
+            <option value="1">Level 1 (recognition)</option>
+            <option value="2" selected>Level 2 (mechanism + tox + pathway)</option>
+            <option value="3">Level 3 (vignette / apply)</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="margin-top:12px" class="grid2">
+        <div>
+          <label>Adaptive repetition (missed questions repeat)</label>
+          <select id="adaptive" class="sel">
+            <option value="on" selected>On</option>
+            <option value="off">Off</option>
+          </select>
+        </div>
+        <div>
+          <label>Answer reveal</label>
+          <select id="reveal" class="sel">
+            <option value="after" selected>After submit</option>
+            <option value="never">Never (hard mode)</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="margin-top:14px" class="chip"><b id="bankSize">0</b> questions loaded • built from PDF table</div>
+      <div class="footerNote">
+        Dose‑range questions are only generated where a range is explicitly provided in the table (e.g., lisinopril 10–40 mg/day, losartan 50–100 mg/day, valsartan 80–320 mg/day, etc.).
+      </div>
+      <div id="selftest" class="footerNote"></div>
+    </div>
+
+    <div class="card">
+      <div class="qmeta">
+        <div class="left">
+          <span class="chip"><b id="progress">0/0</b> done</span>
+          <span class="chip"><b id="score">0</b> correct</span>
+          <span class="chip"><b id="streak">0</b> streak</span>
+        </div>
+        <div class="chip"><b id="modeNow">—</b></div>
+      </div>
+      <div class="bar"><div id="barFill"></div></div>
+
+      <div class="tabs" style="margin-top:12px">
+        <div class="tab active" data-tab="exam" onclick="setTab('exam')">Exam</div>
+        <div class="tab" data-tab="review" onclick="setTab('review')">Missed</div>
+        <div class="tab" data-tab="pathways" onclick="setTab('pathways')">Pathways</div>
+        <div class="tab" data-tab="cheatsheet" onclick="setTab('cheatsheet')">Cheat Sheet</div>
+      </div>
+
+      <div id="panelExam" class="qbox" style="margin-top:12px"></div>
+      <div id="panelReview" class="qbox" style="margin-top:12px;display:none"></div>
+      <div id="panelPath" class="qbox" style="margin-top:12px;display:none"></div>
+      <div id="panelCheat" class="qbox" style="margin-top:12px;display:none"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// =============================
+// DATA (strictly from provided PDF table)
+// Source: Antihypertensive Drug Table Blank PDF pages 1-9
+// =============================
+const SOURCES = {
+  ACE: "Antihypertensive Drug Table p.1-2",
+  ARB: "Antihypertensive Drug Table p.2",
+  RENIN: "Antihypertensive Drug Table p.2-3",
+  CCB_DHP: "Antihypertensive Drug Table p.3-4",
+  CCB_NON: "Antihypertensive Drug Table p.4",
+  THIAZIDE: "Antihypertensive Drug Table p.4",
+  LOOP: "Antihypertensive Drug Table p.5",
+  KSPARING: "Antihypertensive Drug Table p.5",
+  MRA: "Antihypertensive Drug Table p.5",
+  BETA: "Antihypertensive Drug Table p.5-6",
+  ALPHA1: "Antihypertensive Drug Table p.6",
+  ALPHA2: "Antihypertensive Drug Table p.7",
+  VASO: "Antihypertensive Drug Table p.7-9"
+};
+
+const DRUGS = {
+  acei: [
+    {gen:"Benazepril", brand:"Lotensin"},
+    {gen:"Captopril", brand:"Capoten"},
+    {gen:"Enalapril", brand:"Vasotec"},
+    {gen:"Fosinopril", brand:"Monopril"},
+    {gen:"Lisinopril", brand:"Prinivil, Zestril", range:"10-40 mg/day"},
+    {gen:"Moexipril", brand:"Univasc"},
+    {gen:"Perindopril", brand:"Aceon"},
+    {gen:"Quinapril", brand:"Accupril"},
+    {gen:"Ramipril", brand:"Altace"},
+    {gen:"Trandolapril", brand:"Mavik"}
+  ],
+  arbs: [
+    {gen:"Azilsartan", brand:"Edarbi"},
+    {gen:"Candesartan", brand:"Atacand"},
+    {gen:"Eprosartan", brand:"Teveten"},
+    {gen:"Irbesartan", brand:"Avapro"},
+    {gen:"Losartan", brand:"Cozaar", range:"50-100 mg/day"},
+    {gen:"Telmisartan", brand:"Micardis"},
+    {gen:"Olmesartan", brand:"Benicar"},
+    {gen:"Valsartan", brand:"Diovan", range:"80-320 mg/day"}
+  ],
+  renin: [
+    {gen:"Aliskiren", brand:"Tekturna"}
+  ],
+  ccb_dhp: [
+    {gen:"Amlodipine", brand:"Norvasc", range:"2.5-10 mg/day"},
+    {gen:"Felodipine", brand:"Plendil"},
+    {gen:"Nifedipine (long acting)", brand:"Adalat CC, Procardia XL"},
+    {gen:"Nisoldipine", brand:"Sular"},
+    {gen:"Nicardipine", brand:"Cardene IV"},
+    {gen:"Isradipine", brand:"(brand not listed)"},
+    {gen:"Clevidipine", brand:"Cleviprex IV"}
+  ],
+  ccb_non: [
+    {gen:"Diltiazem", brand:"Cardizem"},
+    {gen:"Verapamil", brand:"Calan"}
+  ],
+  thiazide: [
+    {gen:"Chlorothiazide", brand:"Diuril"},
+    {gen:"Chlorthalidone", brand:"Thalitone", range:"12.5-25 mg/day"},
+    {gen:"Hydrochlorothiazide", brand:"Microzide", range:"25-50 mg/day"},
+    {gen:"Indapamide", brand:"Lozol"},
+    {gen:"Metolazone", brand:"Zaroxolyn"}
+  ],
+  loop: [
+    {gen:"Bumetanide", brand:"Bumex"},
+    {gen:"Torsemide", brand:"Demadex"},
+    {gen:"Furosemide", brand:"Lasix"},
+    {gen:"Ethacrynic Acid", brand:"Edecrin"}
+  ],
+  k_sparing: [
+    {gen:"Amiloride", brand:"Midamor"},
+    {gen:"Amiloride + hydrochlorothiazide", brand:"Moduretic"},
+    {gen:"Triamterene", brand:"Dyrenium"},
+    {gen:"Triamterene + hydrochlorothiazide", brand:"Dyazide, Maxide"}
+  ],
+  mra: [
+    {gen:"Spironolactone", brand:"Aldactone", range:"25-50 mg PO qd"},
+    {gen:"Eplerenone", brand:"Inspra"}
+  ],
+  beta1_sel: [
+    {gen:"Atenolol", brand:"Tenormin"},
+    {gen:"Betaxolol", brand:"Kerlone"},
+    {gen:"Bisoprolol", brand:"Zebeta"},
+    {gen:"Metoprolol tartrate", brand:"Lopressor", range:"100-200 mg/day"},
+    {gen:"Metoprolol succinate", brand:"Toprol XL", range:"50-200 mg/day"},
+    {gen:"Nebivolol", brand:"Bystolic"},
+    {gen:"Esmolol", brand:"Breviblock"}
+  ],
+  beta_non: [
+    {gen:"Nadolol", brand:"Corgard"},
+    {gen:"Propranolol", brand:"Inderal"},
+    {gen:"Timolol", brand:"Blocadren"}
+  ],
+  beta_mixed: [
+    {gen:"Carvedilol", brand:"Coreg"},
+    {gen:"Labetalol", brand:"Normodyne, Trandate", range:"200-800 mg/day"}
+  ],
+  alpha1: [
+    {gen:"Doxazosin", brand:"Cardura"},
+    {gen:"Prazosin", brand:"Minipress"},
+    {gen:"Terazosin", brand:"Hytrin"}
+  ],
+  alpha2: [
+    {gen:"Clonidine", brand:"Catapres"},
+    {gen:"Guanfacine", brand:"Tenex"},
+    {gen:"Methyldopa", brand:"Aldomet"}
+  ],
+  vasodilators: [
+    {gen:"Hydralazine", brand:"Apresoline"},
+    {gen:"Minoxidil", brand:"Loniten"}
+  ]
+};
+
+const FACTS = {
+  acei: {
+    class:"ACE inhibitors",
+    moa:"Inhibit angiotensin converting enzyme (ACE; peptidyl dipeptidase) → ↓ Ang I→Ang II conversion.",
+    pathway:"RAAS: blocks ACE step (Ang I → Ang II).",
+    incDec:["↓ Ang II","↓ aldosterone","↑ bradykinin (ACE normally breaks it down)","↓ efferent arteriolar tone → ↓ intraglomerular pressure/GFR"],
+    tox:["Severe first‑dose hypotension (high renin)","Dry cough (↑ bradykinin)","Hyperkalemia (↓ aldosterone)","Fetopathic potential—stop when pregnancy confirmed","Maculopapular rash","Angioedema (↑ bradykinin)","Acute renal failure risk (efferent dilation → ↓ GFR)"]
+  },
+  arbs: {
+    class:"Angiotensin receptor blockers (ARBs)",
+    moa:"Block AT1 receptor activation by angiotensin II.",
+    pathway:"RAAS: blocks Ang II action at AT1 receptor.",
+    incDec:["↓ Ang II effects at AT1","↓ aldosterone","Hyperkalemia risk","Less angioedema than ACEi (per table)"],
+    tox:["Severe first‑dose hypotension (high renin)","Hyperkalemia","Fetopathic potential—stop when pregnancy confirmed","Maculopapular rash","Less angioedema (vs ACEi)"]
+  },
+  renin: {
+    class:"Direct renin inhibitor",
+    moa:"Binds renin active site → prevents cleavage of angiotensinogen → ↓ Ang I formation.",
+    pathway:"RAAS: blocks renin step (angiotensinogen → Ang I).",
+    incDec:["↓ Ang I","↓ Ang II","↓ aldosterone"],
+    tox:["Severe first‑dose hypotension (high renin)","Dry cough (less risk vs ACEi per table)","Hyperkalemia","Fetopathic potential","Maculopapular rash","Angioedema (less risk vs ACEi per table)","Do NOT combine with ACEi/ARB (table warning)"]
+  },
+  ccb_dhp: {
+    class:"Calcium channel blockers (DHP)",
+    moa:"Inhibit Ca2+ influx into arterial smooth muscle → ↓ vasoconstriction → vasodilation.",
+    pathway:"Blocks L‑type Ca2+ entry in vascular smooth muscle (functional pathway).",
+    incDec:["↓ Ca2+ entry into arterial smooth muscle","↓ vasoconstriction","↑ vasodilation","Reflex sympathetic activation → tachycardia (esp IV)"],
+    tox:["Constipation","Tachycardia (reflex; more common IV)","Hypotension (dizziness/flushing/headache)","Gingival hyperplasia","GI complaints","Mood changes","Nifedipine: higher MI chance → avoid in cardiac history (table note)"]
+  },
+  ccb_non: {
+    class:"Calcium channel blockers (non‑DHP)",
+    moa:"Inhibit Ca2+ influx into heart (more selective for myocardium) → negative inotropy + chronotropy.",
+    pathway:"Blocks Ca2+ entry in SA/AV nodes + myocardium.",
+    incDec:["↓ HR","↓ AV conduction","↓ contractility"],
+    tox:["Bradycardia/AV block","Constipation","Caution w/ beta blockers (additive bradycardia/AV block)","Moderate CYP3A4 inhibition (table note)"]
+  },
+  thiazide: {
+    class:"Thiazide diuretics",
+    moa:"Inhibit Na/Cl transporter (NCC) in DCT → natriuresis; enhanced Ca reabsorption (table).",
+    pathway:"Nephron: DCT NCC blockade.",
+    incDec:["↓ Na reabsorption (DCT)","↑ Na/Cl in urine","↑ Ca reabsorption (table)","↓ Mg, Na, K (table)","↑ uric acid, lipids; ↑ blood sugar (table)"],
+    tox:["Electrolyte abnormalities","Prolonged QT due to hypokalemia","ED (table)"]
+  },
+  loop: {
+    class:"Loop diuretics",
+    moa:"Block NKCC2 cotransporter → ↑ urinary Na/Cl excretion; ↓ Ca/Mg/K (table).",
+    pathway:"Nephron: thick ascending limb NKCC2 blockade.",
+    incDec:["↑ Na/Cl excretion","↓ Ca, Na, Mg, K (table)","↑ uric acid","↑ blood sugar"],
+    tox:["Ototoxicity","Electrolyte abnormalities","Severe dehydration","Nephrotoxic (table)"]
+  },
+  k_sparing: {
+    class:"K+‑sparing diuretics (ENaC blockers)",
+    moa:"Directly block ENaC in late DCT/collecting duct → ↓ Na reabsorption; K is spared.",
+    pathway:"Nephron: late DCT/collecting duct ENaC blockade.",
+    incDec:["↓ Na reabsorption","↑ Na in urine","↑ K retention (K spared)","↑ Mg (table)"],
+    tox:["BBW: Hyperkalemia (table)","Electrolyte abnormalities"]
+  },
+  mra: {
+    class:"Mineralocorticoid receptor antagonists",
+    moa:"Block aldosterone receptor → indirectly reduce Na+ channels activity (table).",
+    pathway:"Nephron/RAAS: blocks aldosterone effect at mineralocorticoid receptor.",
+    incDec:["↓ aldosterone signaling","↓ Na reabsorption via ENaC/Na+ channels activity","↑ K retention"],
+    tox:["Hyperkalemia","Gynecomastia (spironolactone; nonselective anti‑androgen)"]
+  },
+  beta: {
+    class:"Beta blockers",
+    moa:"Antagonize beta receptors; β1 blockade → ↓ HR. Some agents have extra effects per table.",
+    pathway:"Sympathetic: β1 blockade (heart); some β2 effects + renin changes per table.",
+    incDec:["↓ HR","Nonselective β2 blockade → bronchoconstriction risk","β2 blockade → ↓ glucose release → prolonged hypoglycemia (table)","β2 blockade → ↓ renin release (table)","Nebivolol stimulates eNOS → ↑ NO → vasodilation (table)"],
+    tox:["Avoid in reactive airway disease (esp nonselective) (table)","Rebound tachycardia/HTN if sudden withdrawal (table)","Decreased exercise tolerance","Sexual dysfunction"]
+  },
+  alpha1: {
+    class:"Alpha‑1 blockers",
+    moa:"Block α1 receptors on vascular smooth muscle → inhibit vasoconstriction. Useful in HTN + BPH (table).",
+    pathway:"Sympathetic: α1 blockade on vascular smooth muscle.",
+    incDec:["↓ vasoconstriction","Risk: first dose effect/orthostatic hypotension","Kidney: Na/water retention → ↑ plasma volume (table note)"],
+    tox:["First dose effect","Orthostatic hypotension","Increased CHF risk when used as monotherapy (table)"]
+  },
+  alpha2: {
+    class:"Alpha‑2 agonists",
+    moa:"Agonize α2 receptors → negative feedback → ↓ norepinephrine release (table).",
+    pathway:"Sympathetic: central α2 agonism reduces sympathetic outflow.",
+    incDec:["↓ NE release","Also inhibits ACh release + insulin release (table)"],
+    tox:["Anticholinergic effects (dry mouth, blurred vision)","Hypotension","Bradycardia","Fatigue","Sexual dysfunction","Sedation","Rebound hypertension if abrupt stop","Depression"]
+  },
+  vasodilators: {
+    class:"Direct vasodilators",
+    moa:"Hydralazine: ↑ NO → ↑ cGMP → ↓ intracellular Ca2+ → arterial vasodilation. Minoxidil: opens K+ channels → hyperpolarization → prevents Ca2+ entry (table).",
+    pathway:"Vascular smooth muscle: NO/cGMP pathway (hydralazine); K+ channel opener pathway (minoxidil).",
+    incDec:["Hydralazine: ↑ NO, ↑ cGMP, ↓ Ca2+","Minoxidil: ↑ K+ channel opening → hyperpolarization → ↓ Ca2+ entry","Reflex sympathetic outflow → tachycardia/angina (table)","Kidney response: ↑ renin (table)"],
+    tox:["Headache/flushing/dizziness/nausea (vasodilation)","Hypotension","Hydralazine‑induced lupus syndrome","Tachyphylaxis","Reflex tachycardia/palpitations/angina","Salt/fluid retention","Minoxidil: hypertrichosis (hair growth)","Requires diuretic + beta blocker combination therapy (table)","Minoxidil PO is a prodrug (table)"]
+  }
+};
+
+// =============================
+// QUESTION GENERATION
+// =============================
+function randInt(n){ return Math.floor(Math.random()*n); }
+function shuffle(arr){ for(let i=arr.length-1;i>0;i--){ const j=randInt(i+1); [arr[i],arr[j]]=[arr[j],arr[i]];} return arr; }
+function pick(arr){ return arr[randInt(arr.length)]; }
+function uniq(arr){ return [...new Set(arr)]; }
+
+function buildLookup(){
+  const all = [];
+  Object.values(DRUGS).forEach(list => list.forEach(d=>all.push(d)));
+  return all;
+}
+const ALL_DRUGS = buildLookup();
+
+function distractorsForBrand(correctGen){
+  const pool = ALL_DRUGS.filter(d=>d.gen!==correctGen && d.brand && d.brand!=="(brand not listed)");
+  return uniq(shuffle(pool).slice(0,3).map(d=>d.gen));
+}
+function distractorsForGeneric(correctBrand){
+  const pool = ALL_DRUGS.filter(d=>d.brand!==correctBrand && d.brand && d.brand!=="(brand not listed)");
+  return uniq(shuffle(pool).slice(0,3).map(d=>d.brand));
+}
+
+function normalizeRange(r){
+  return r; // keep table string as-is (no invention)
+}
+
+function makeMCQ(q, correct, wrongs, explain, src, tags=[]){
+  const options = shuffle([correct, ...wrongs]).slice(0,4);
+  const answerIndex = options.indexOf(correct);
+  return {type:"mcq", q, options, answerIndex, explain, src, tags};
+}
+
+function makeFill(q, answer, explain, src, tags=[]){
+  return {type:"fill", q, answer, explain, src, tags};
+}
+
+function makeVignette(stem, question, options, answerIndex, explain, src, tags=[]){
+  return {type:"vignette", q: stem + "\n\n" + question, options, answerIndex, explain, src, tags};
+}
+
+function makePathCard(title, pre, explain, src, tags=[]){
+  return {type:"path", title, pre, explain, src, tags};
+}
+
+function generateQuestions(section="all", difficulty=2){
+  const qs = [];
+  const want = {
+    raas: ["acei","arbs","renin"],
+    ccb: ["ccb_dhp","ccb_non"],
+    diuretics: ["thiazide","loop","k_sparing","mra"],
+    symp: ["beta1_sel","beta_non","beta_mixed","alpha1","alpha2"],
+    vasodilators: ["vasodilators"],
+    all: Object.keys(DRUGS)
+  }[section] || Object.keys(DRUGS);
+
+  const bucketToFacts = (bucket)=>{
+    if(bucket==="acei") return "acei";
+    if(bucket==="arbs") return "arbs";
+    if(bucket==="renin") return "renin";
+    if(bucket==="ccb_dhp") return "ccb_dhp";
+    if(bucket==="ccb_non") return "ccb_non";
+    if(bucket==="thiazide") return "thiazide";
+    if(bucket==="loop") return "loop";
+    if(bucket==="k_sparing") return "k_sparing";
+    if(bucket==="mra") return "mra";
+    if(bucket.startsWith("beta")) return "beta";
+    if(bucket==="alpha1") return "alpha1";
+    if(bucket==="alpha2") return "alpha2";
+    if(bucket==="vasodilators") return "vasodilators";
+    return null;
+  };
+
+  const bucketToSource = (bucket)=>{
+    const m = {
+      acei:SOURCES.ACE, arbs:SOURCES.ARB, renin:SOURCES.RENIN,
+      ccb_dhp:SOURCES.CCB_DHP, ccb_non:SOURCES.CCB_NON,
+      thiazide:SOURCES.THIAZIDE, loop:SOURCES.LOOP, k_sparing:SOURCES.KSPARING, mra:SOURCES.MRA,
+      beta1_sel:SOURCES.BETA, beta_non:SOURCES.BETA, beta_mixed:SOURCES.BETA,
+      alpha1:SOURCES.ALPHA1, alpha2:SOURCES.ALPHA2,
+      vasodilators:SOURCES.VASO
+    };
+    return m[bucket] || "Antihypertensive Drug Table";
+  };
+
+  want.forEach(bucket=>{
+    DRUGS[bucket].forEach(d=>{
+      if(d.brand && d.brand!=="(brand not listed)"){
+        qs.push(makeMCQ(
+          `Brand → Generic: ${d.brand} is which generic?`,
+          d.gen,
+          distractorsForBrand(d.gen),
+          `From the table list for this class, ${d.gen} is shown with brand ${d.brand}.`,
+          bucketToSource(bucket),
+          ["brand→generic", bucket]
+        ));
+        qs.push(makeMCQ(
+          `Generic → Brand: ${d.gen} corresponds to which brand?`,
+          d.brand,
+          distractorsForGeneric(d.brand),
+          `From the table list for this class, ${d.gen} is paired with brand ${d.brand}.`,
+          bucketToSource(bucket),
+          ["generic→brand", bucket]
+        ));
+      }
+
+      if(d.range){
+        const allRanges = uniq(ALL_DRUGS.filter(x=>x.range).map(x=>x.range));
+        const wrongRanges = shuffle(allRanges.filter(r=>r!==d.range)).slice(0,3);
+        qs.push(makeMCQ(
+          `Dose range: ${d.gen} (${d.brand})`,
+          normalizeRange(d.range),
+          wrongRanges,
+          `Dose range is explicitly listed in the table as ${d.range} for ${d.gen}.`,
+          bucketToSource(bucket),
+          ["dose-range", bucket]
+        ));
+        qs.push(makeFill(
+          `Fill‑in: Enter the listed dose range for ${d.gen} (${d.brand}).`,
+          normalizeRange(d.range),
+          `The table explicitly lists ${d.range} for ${d.gen}.`,
+          bucketToSource(bucket),
+          ["dose-range", "fill", bucket]
+        ));
+      }
+
+      const fkey = bucketToFacts(bucket);
+      if(fkey){
+        qs.push(makeMCQ(
+          `Drug class: ${d.gen} is in which class?`,
+          FACTS[fkey].class,
+          shuffle(Object.values(FACTS).map(x=>x.class).filter(c=>c!==FACTS[fkey].class)).slice(0,3),
+          `This drug is listed under ${FACTS[fkey].class} in the table.`,
+          bucketToSource(bucket),
+          ["drug→class", bucket]
+        ));
+
+        const pathwayChoices = uniq([
+          FACTS.acei.pathway,
+          FACTS.arbs.pathway,
+          FACTS.renin.pathway,
+          FACTS.ccb_dhp.pathway,
+          FACTS.ccb_non.pathway,
+          FACTS.thiazide.pathway,
+          FACTS.loop.pathway,
+          FACTS.k_sparing.pathway,
+          FACTS.mra.pathway,
+          FACTS.beta.pathway,
+          FACTS.alpha1.pathway,
+          FACTS.alpha2.pathway,
+          FACTS.vasodilators.pathway
+        ]);
+        const correctPath = FACTS[fkey].pathway;
+        const wrongP = shuffle(pathwayChoices.filter(p=>p!==correctPath)).slice(0,3);
+        qs.push(makeMCQ(
+          `Pathway/target: ${d.gen} primarily acts where?`,
+          correctPath,
+          wrongP,
+          `Based on the table MOA/notes for this class, the pathway/target is: ${correctPath}`,
+          bucketToSource(bucket),
+          ["drug→pathway", bucket]
+        ));
+
+        const incDec = FACTS[fkey].incDec;
+        if(incDec && incDec.length){
+          const correct = pick(incDec);
+          const pool = uniq(Object.values(FACTS).flatMap(x=>x.incDec || [])).filter(x=>x!==correct);
+          const wrongs = shuffle(pool).slice(0,3);
+          qs.push(makeMCQ(
+            `Physiology (↑/↓): With ${FACTS[fkey].class}, which change is expected?`,
+            correct,
+            wrongs,
+            `From the class notes in the table: ${FACTS[fkey].class} leads to ${correct}.`,
+            bucketToSource(bucket),
+            ["inc/dec", bucket]
+          ));
+          if(difficulty>=2){
+            qs.push(makeFill(
+              `Fill‑in: ${FACTS[fkey].class} → (write one key ↑/↓ effect exactly as in the table/derived statement).`,
+              correct,
+              `Key effect listed/derived directly from the class MOA/notes: ${correct}.`,
+              bucketToSource(bucket),
+              ["inc/dec", "fill", bucket]
+            ));
+          }
+        }
+
+        const tox = FACTS[fkey].tox;
+        if(tox && tox.length){
+          const correctT = pick(tox);
+          const poolT = uniq(Object.values(FACTS).flatMap(x=>x.tox || [])).filter(x=>x!==correctT);
+          const wrongT = shuffle(poolT).slice(0,3);
+          qs.push(makeMCQ(
+            `Toxicity/BBW: Which is associated with ${FACTS[fkey].class}?`,
+            correctT,
+            wrongT,
+            `The table lists this under adverse effects/toxicities for ${FACTS[fkey].class}: ${correctT}.`,
+            bucketToSource(bucket),
+            ["tox/BBW", bucket]
+          ));
+        }
+      }
+    });
+  });
+
+  if(difficulty>=2){
+    const v1Opts = shuffle(["ACE inhibitors","ARBs","DHP CCBs","Loop diuretics"]);
+    qs.push(makeVignette(
+      "A patient starts a new antihypertensive and develops a persistent dry cough shortly after. The clinician suspects it is due to buildup of a peptide normally broken down by ACE.",
+      "Which drug class best fits?",
+      v1Opts,
+      v1Opts.indexOf("ACE inhibitors"),
+      "ACE breaks down bradykinin; inhibiting ACE → bradykinin accumulation → dry cough (table).",
+      SOURCES.ACE,
+      ["vignette","ACEi","bradykinin"]
+    ));
+
+    const v2Opts = shuffle(["ARBs","ACE inhibitors","Alpha‑2 agonists","Thiazides"]);
+    qs.push(makeVignette(
+      "A patient needs RAAS blockade but wants lower risk of angioedema compared with ACE inhibition (per your table notes).",
+      "Which class should be chosen?",
+      v2Opts,
+      v2Opts.indexOf("ARBs"),
+      "The table notes ARBs have less angioedema compared with ACE inhibitors.",
+      SOURCES.ARB,
+      ["vignette","ARB"]
+    ));
+
+    const v3Opts = shuffle(["Non‑DHP CCBs (verapamil/diltiazem)","DHP CCBs","Loop diuretics","Alpha‑1 blockers"]);
+    qs.push(makeVignette(
+      "A patient is already on a beta blocker. You consider adding a calcium channel blocker but want to avoid excessive bradycardia/AV block from additive slowing of SA/AV nodes.",
+      "Which option is the ONE to be cautious with based on the table?",
+      v3Opts,
+      v3Opts.indexOf("Non‑DHP CCBs (verapamil/diltiazem)"),
+      "Table: Non‑DHP CCBs slow SA/AV nodes; caution with beta blockers due to additive bradycardia/AV block.",
+      SOURCES.CCB_NON,
+      ["vignette","non‑DHP"]
+    ));
+
+    const v4Opts = shuffle(["Hyperkalemia","Ototoxicity","Dry cough","Gingival hyperplasia"]);
+    qs.push(makeVignette(
+      "A patient is started on a diuretic that directly blocks ENaC in the late DCT/collecting duct and is known for a BBW listed in your table.",
+      "Which major risk/BBW is most expected?",
+      v4Opts,
+      v4Opts.indexOf("Hyperkalemia"),
+      "Table explicitly lists BBW: Hyperkalemia for ENaC‑blocking K+‑sparing diuretics.",
+      SOURCES.KSPARING,
+      ["vignette","BBW","hyperkalemia"]
+    ));
+
+    const mechOpts = shuffle(["Hydralazine increases NO → cGMP → ↓ Ca2+","Minoxidil blocks AT1 receptor","Hydralazine blocks NKCC2","Minoxidil inhibits NCC"]);
+    qs.push(makeVignette(
+      "You add a direct arterial vasodilator for resistant hypertension. The table says it works by increasing nitric oxide and raising cGMP to lower intracellular Ca2+.",
+      "Which mechanism matches?",
+      mechOpts,
+      mechOpts.indexOf("Hydralazine increases NO → cGMP → ↓ Ca2+"),
+      "Table: Hydralazine increases NO → ↑ cGMP → ↓ intracellular Ca2+ → vasodilation.",
+      SOURCES.VASO,
+      ["vignette","hydralazine","cGMP"]
+    ));
+  }
+
+  const raasPre = `RAAS (what increases/decreases)\n\nLiver: angiotensinogen\n  |  (RENIN)  [Aliskiren blocks here]\n  v\nAngiotensin I\n  |  (ACE)     [ACE inhibitors block here]\n  v\nAngiotensin II\n  |  binds AT1 receptor  [ARBs block here]\n  v\nVasoconstriction + Aldosterone release\n\nKey changes from your table:\n- ACEi: ↓ Ang II, ↓ aldosterone, ↑ bradykinin → cough/angioedema; efferent dilation → ↓ GFR (AKI risk)\n- ARB: blocks AT1 effects; hyperkalemia + fetopathy; less angioedema vs ACEi\n- Aliskiren: ↓ Ang I → ↓ Ang II; do NOT combine with ACEi/ARB (table warning)`;
+
+  const nephronPre = `NEPHRON TARGETS (from your table)\n\nThick Ascending Limb (TAL): NKCC2  [Loop diuretics block NKCC2]\n\nDCT: NCC (Na/Cl transporter)       [Thiazides block NCC]\n      • Table notes: enhanced Ca reabsorption with thiazides\n\nLate DCT / Collecting Duct: ENaC    [Amiloride/Triamterene block ENaC]\n      Aldosterone receptor (MR)     [Spironolactone/Eplerenone block MR]\n\nKey changes (table):\n- Loop: ↑ Na/Cl excretion; ↓ Ca/Mg/K; ototoxicity + dehydration\n- Thiazide: ↓ Na/Cl reabsorption; ↑ Ca reabsorption; ↓ K/Mg; ↑ uric acid/glucose/lipids\n- ENaC blockers: K spared; BBW hyperkalemia\n- MR antagonists: hyperkalemia; spironolactone → gynecomastia`;
+
+  const caPre = `CALCIUM CHANNELS (from your table)\n\nDHP CCBs ("-dipine") → VASCULAR SMOOTH MUSCLE\n- Inhibit Ca2+ influx → vasodilation\n- Reflex sympathetic activation → tachycardia (esp IV)\n\nNon‑DHP CCBs (verapamil/diltiazem) → HEART\n- Inhibit Ca2+ influx in myocardium/SA/AV nodes\n- ↓ HR, ↓ AV conduction, ↓ contractility\n- Caution with beta blockers (additive bradycardia/AV block)\n- Moderate CYP3A4 inhibition (table)`;
+
+  const sympPre = `SYMPATHETIC TARGETS (from your table)\n\nβ‑blockers:\n- β1 blockade → ↓ HR\n- Nonselective β2 blockade → bronchoconstriction risk (avoid reactive airway disease per table)\n- β2 blockade → ↓ glucose release → prolonged hypoglycemia (table)\n- Sudden withdrawal → rebound tachycardia/HTN (table)\n- Nebivolol: stimulates eNOS → ↑ NO → vasodilation (table)\n\nα1 blockers ("-osin"):\n- Block α1 on vascular smooth muscle → ↓ vasoconstriction\n- First dose effect / orthostatic hypotension\n- CHF risk as monotherapy (table)\n\nα2 agonists (clonidine/guanfacine/methyldopa):\n- α2 agonism → negative feedback → ↓ norepinephrine release\n- Abrupt stop → rebound hypertension (table)`;
+
+  qs.push(makePathCard("RAAS Map", raasPre, "This diagram mirrors the RAAS targets described in the table for ACE inhibitors, ARBs, and aliskiren.", "Antihypertensive Drug Table p.1-3", ["path","RAAS"]));
+  qs.push(makePathCard("Nephron Map", nephronPre, "This diagram matches nephron sites and transporter targets listed in the table (NCC, NKCC2, ENaC, MR).", "Antihypertensive Drug Table p.4-5", ["path","nephron"]));
+  qs.push(makePathCard("Calcium Channel Map", caPre, "This diagram summarizes DHP vs non‑DHP selectivity and key adverse effects from the table.", "Antihypertensive Drug Table p.3-4", ["path","CCB"]));
+  qs.push(makePathCard("Sympathetic Map", sympPre, "This diagram summarizes sympathetic drug targets and major table warnings (β2 bronchoconstriction, rebound HTN, first dose effect).", "Antihypertensive Drug Table p.5-7", ["path","sympathetic"]));
+
+  return qs;
+}
+
+// =============================
+// ENGINE (adaptive spaced repetition)
+// =============================
+let BANK = [];
+let QUEUE = [];
+let MISSED = [];
+let done = 0;
+let correct = 0;
+let streak = 0;
+let paused = false;
+let current = null;
+let answered = false;
+
+function setTab(name){
+  const tabs = document.querySelectorAll('.tab');
+  tabs.forEach(t=>t.classList.toggle('active', t.dataset.tab===name));
+  document.getElementById('panelExam').style.display = (name==='exam')?'block':'none';
+  document.getElementById('panelReview').style.display = (name==='review')?'block':'none';
+  document.getElementById('panelPath').style.display = (name==='pathways')?'block':'none';
+  document.getElementById('panelCheat').style.display = (name==='cheatsheet')?'block':'none';
+  renderReview();
+  renderPathways();
+  renderCheat();
+}
+
+function startExam(){
+  const section = document.getElementById('section').value;
+  const difficulty = parseInt(document.getElementById('difficulty').value,10);
+  const mode = document.getElementById('mode').value;
+  const target = clamp(parseInt(document.getElementById('targetCount').value,10)||220, 20, 600);
+
+  BANK = generateQuestions(section, difficulty);
+
+  let filtered = BANK;
+  if(mode!=="mixed"){
+    if(mode==="mcq") filtered = BANK.filter(q=>q.type==="mcq" || q.type==="vignette");
+    if(mode==="fill") filtered = BANK.filter(q=>q.type==="fill");
+    if(mode==="vignette") filtered = BANK.filter(q=>q.type==="vignette");
+    if(mode==="path") filtered = BANK.filter(q=>q.type==="path");
+  }
+
+  filtered = shuffle(filtered);
+  if(filtered.length > target) filtered = filtered.slice(0, target);
+
+  while(filtered.length < target){
+    filtered.push(...shuffle(filtered).slice(0, Math.min(25, target-filtered.length)));
+  }
+
+  QUEUE = filtered.map((q, i)=>({q, id:i, weight:1, seen:0, wrong:0}));
+  shuffle(QUEUE);
+
+  MISSED = [];
+  done=0; correct=0; streak=0; paused=false; current=null; answered=false;
+
+  document.getElementById('bankSize').innerText = String(filtered.length);
+  document.getElementById('modeNow').innerText = modeLabel(mode);
+  document.getElementById('btnNext').disabled = true;
+  document.getElementById('btnPause').disabled = false;
+  document.getElementById('btnPause').innerText = 'Pause';
+
+  nextQuestion(true);
+}
+
+function modeLabel(m){
+  return {
+    mixed:'Mixed (MCQ + Fill + Vignettes + Pathways)',
+    mcq:'MCQ (includes vignette MCQ)',
+    fill:'Fill‑in',
+    vignette:'Vignettes',
+    path:'Pathways'
+  }[m] || '—';
+}
+
+function clamp(x,a,b){ return Math.max(a, Math.min(b, x)); }
+
+function togglePause(){
+  paused = !paused;
+  document.getElementById('btnPause').innerText = paused ? 'Resume' : 'Pause';
+}
+
+function resetAll(){
+  BANK=[]; QUEUE=[]; MISSED=[]; done=0; correct=0; streak=0; paused=false; current=null; answered=false;
+  document.getElementById('panelExam').innerHTML = "<div class='note'>Click <b>Start</b> to generate your exam.</div>";
+  document.getElementById('bankSize').innerText = "0";
+  document.getElementById('progress').innerText = "0/0";
+  document.getElementById('score').innerText = "0";
+  document.getElementById('streak').innerText = "0";
+  document.getElementById('barFill').style.width = "0%";
+  document.getElementById('btnNext').disabled = true;
+  document.getElementById('btnPause').disabled = true;
+  document.getElementById('modeNow').innerText = '—';
+  renderReview(); renderPathways(); renderCheat();
+}
+
+function pullNext(){
+  const adaptive = document.getElementById('adaptive').value === 'on';
+  if(!QUEUE.length) return null;
+  if(!adaptive) return QUEUE.shift();
+
+  let total = 0;
+  for(const item of QUEUE) total += item.weight;
+  let r = Math.random()*total;
+  for(let i=0;i<QUEUE.length;i++){
+    r -= QUEUE[i].weight;
+    if(r<=0) return QUEUE.splice(i,1)[0];
+  }
+  return QUEUE.shift();
+}
+
+function nextQuestion(force=false){
+  if(paused && !force) return;
+  answered = false;
+  document.getElementById('btnNext').disabled = true;
+
+  const item = pullNext();
+  if(!item){
+    document.getElementById('panelExam').innerHTML = `<h3 style='margin:0 0 10px'>Finished</h3>
+      <div class='note'>No more questions in queue. Use <b>Missed</b> tab to drill wrong ones or restart.</div>`;
+    updateHUD();
+    return;
+  }
+
+  current = item;
+  current.seen += 1;
+
+  renderQuestion(item);
+  updateHUD();
+}
+
+function updateHUD(){
+  const total = done + QUEUE.length + (current && !answered ? 1 : 0);
+  document.getElementById('progress').innerText = `${done}/${Math.max(total,0)}`;
+  document.getElementById('score').innerText = `${correct}`;
+  document.getElementById('streak').innerText = `${streak}`;
+  const pct = total ? Math.round((done/total)*100) : 0;
+  document.getElementById('barFill').style.width = pct + "%";
+}
+
+function renderQuestion(item){
+  const q = item.q;
+  const panel = document.getElementById('panelExam');
+
+  const meta = `<div class='qmeta'>
+      <div class='left'>
+        ${(q.tags||[]).slice(0,4).map(t=>`<span class='tag'>${escapeHtml(t)}</span>`).join('')}
+      </div>
+      <div>
+        <span class='tag warn'>Seen: ${item.seen}</span>
+        ${item.wrong?`<span class='tag bad'>Missed: ${item.wrong}</span>`:''}
+      </div>
+    </div>`;
+
+  if(q.type === 'path'){
+    panel.innerHTML = `${meta}
+      <div class='qtext'>${escapeHtml(q.title)}</div>
+      <div class='diagram'><pre>${escapeHtml(q.pre)}</pre></div>
+      <div class='explain'>${escapeHtml(q.explain)}<div class='src'>Source: ${escapeHtml(q.src)}</div></div>
+      <div class='note' style='margin-top:10px'>Click <b>Next</b> to continue.</div>`;
+    answered = true;
+    done++;
+    document.getElementById('btnNext').disabled = false;
+    return;
+  }
+
+  if(q.type === 'fill'){
+    panel.innerHTML = `${meta}
+      <div class='qtext'>${escapeHtml(q.q)}</div>
+      <label>Your answer (match the table string)</label>
+      <input id='fillInput' type='text' placeholder='Type exact table range/statement…' />
+      <div class='controls' style='margin-top:10px'>
+        <button onclick='submitFill()'>Submit</button>
+        <button class='secondary' onclick='hintFill()'>Hint</button>
+      </div>
+      <div id='feedback'></div>`;
+    return;
+  }
+
+  const opts = (q.options||[]).map((opt, idx)=>`<div class='opt' onclick='submitMCQ(${idx})'>${escapeHtml(opt)}</div>`).join('');
+  panel.innerHTML = `${meta}
+    <div class='qtext'>${escapeHtml(q.q).replace(/\n/g,'<br>')}</div>
+    <div class='options'>${opts}</div>
+    <div id='feedback'></div>`;
+}
+
+function submitMCQ(choice){
+  if(!current || answered) return;
+  const q = current.q;
+  const reveal = document.getElementById('reveal').value;
+
+  const opts = Array.from(document.querySelectorAll('.opt'));
+  const correctIdx = q.answerIndex;
+  const isCorrect = choice === correctIdx;
+
+  answered = true;
+  done++;
+
+  if(isCorrect){
+    correct++; streak++;
+    if(reveal !== 'never') opts[choice]?.classList.add('correct');
+    current.weight = Math.max(1, current.weight - 0.25);
+  } else {
+    streak = 0;
+    current.wrong += 1;
+    MISSED.push({ when: new Date().toISOString(), q: q.q, type: q.type, tags: q.tags||[], src:q.src });
+
+    if(reveal !== 'never'){
+      opts[choice]?.classList.add('incorrect');
+      opts[correctIdx]?.classList.add('correct');
+    }
+
+    const adaptive = document.getElementById('adaptive').value === 'on';
+    if(adaptive){
+      current.weight = Math.min(6, current.weight + 1.25);
+      const insertAt = Math.min(QUEUE.length, 6 + randInt(12));
+      QUEUE.splice(insertAt, 0, current);
+    }
+  }
+
+  const fb = document.getElementById('feedback');
+  fb.innerHTML = `<div class='explain'>${escapeHtml(q.explain)}<div class='src'>Source: ${escapeHtml(q.src)}</div></div>`;
+
+  document.getElementById('btnNext').disabled = false;
+  updateHUD();
+}
+
+function norm(s){
+  return (s||"")
+    .toLowerCase()
+    .replace(/\s+/g,' ')
+    .replace(/[\u2013\u2014\-]/g,'-')
+    .trim();
+}
+
+function submitFill(){
+  if(!current || answered) return;
+  const q = current.q;
+  const input = document.getElementById('fillInput');
+  const val = input?.value || "";
+  const correctAns = q.answer;
+  const isCorrect = norm(val) === norm(correctAns);
+
+  answered = true;
+  done++;
+
+  const adaptive = document.getElementById('adaptive').value === 'on';
+  const reveal = document.getElementById('reveal').value;
+
+  if(isCorrect){
+    correct++; streak++;
+    current.weight = Math.max(1, current.weight - 0.25);
+  } else {
+    streak = 0;
+    current.wrong += 1;
+    MISSED.push({ when: new Date().toISOString(), q: q.q, type: q.type, tags: q.tags||[], src:q.src });
+    if(adaptive){
+      current.weight = Math.min(6, current.weight + 1.25);
+      const insertAt = Math.min(QUEUE.length, 6 + randInt(12));
+      QUEUE.splice(insertAt, 0, current);
+    }
+  }
+
+  const fb = document.getElementById('feedback');
+  const statusTag = isCorrect ? `<span class='tag ok'>Correct</span>` : `<span class='tag bad'>Incorrect</span>`;
+  const ansLine = (reveal==='never') ? '' : `<div class='note' style='margin-top:8px'><b>Expected:</b> ${escapeHtml(correctAns)}</div>`;
+
+  fb.innerHTML = `<div class='explain'>${statusTag} ${escapeHtml(q.explain)}${ansLine}<div class='src'>Source: ${escapeHtml(q.src)}</div></div>`;
+  document.getElementById('btnNext').disabled = false;
+  updateHUD();
+}
+
+function hintFill(){
+  const q = current?.q;
+  if(!q || q.type!=='fill') return;
+  const a = q.answer || "";
+  const hint = a.length<=6 ? a : (a.slice(0, Math.min(12,a.length)) + "…");
+  const fb = document.getElementById('feedback');
+  fb.innerHTML = `<div class='explain'><span class='tag warn'>Hint</span> Starts with: <b>${escapeHtml(hint)}</b><div class='src'>Source: ${escapeHtml(q.src)}</div></div>`;
+}
+
+function renderReview(){
+  const panel = document.getElementById('panelReview');
+  if(!MISSED.length){
+    panel.innerHTML = `<div class='note'>No missed questions yet. When you miss one, it will show up here (with its source page range).</div>`;
+    return;
+  }
+  const last = MISSED.slice(-30).reverse();
+  panel.innerHTML = `<div class='note'>Showing last ${last.length} missed questions (latest first). Use Restart to drill again.</div>` +
+    last.map(m=>`<div class='explain' style='margin-top:10px'>
+      <div style='font-weight:700;margin-bottom:6px'>${escapeHtml(m.q).slice(0,220)}${m.q.length>220?'…':''}</div>
+      <div class='src'>Type: ${escapeHtml(m.type)} • Tags: ${(m.tags||[]).map(escapeHtml).join(', ')} • Source: ${escapeHtml(m.src)}</div>
+    </div>`).join('');
+}
+
+function renderPathways(){
+  const panel = document.getElementById('panelPath');
+  const cards = (BANK||[]).filter(x=>x.type==='path');
+  if(!cards.length){
+    panel.innerHTML = `<div class='note'>Start an exam first to load pathway cards.</div>`;
+    return;
+  }
+  panel.innerHTML = cards.map(c=>`<div class='diagram' style='margin-top:10px'>
+      <div style='font-weight:800;margin-bottom:8px'>${escapeHtml(c.title)}</div>
+      <pre>${escapeHtml(c.pre)}</pre>
+      <div class='note' style='margin-top:8px'>${escapeHtml(c.explain)}<br><span class='src'>Source: ${escapeHtml(c.src)}</span></div>
+    </div>`).join('');
+}
+
+function renderCheat(){
+  const panel = document.getElementById('panelCheat');
+  panel.innerHTML = `
+    <div class='note'>High‑yield cheat sheet distilled from your table (no outside facts added).</div>
+    <div class='diagram' style='margin-top:10px'><pre>${escapeHtml(cheatSheetText())}</pre></div>
+  `;
+}
+
+function cheatSheetText(){
+  return `HIGH‑YIELD QUICK MAP (from your table)\n\nRAAS\n- ACEi: block Ang I→Ang II; ↑ bradykinin → cough/angioedema; hyperkalemia; fetopathy; AKI risk via efferent dilation (↓ GFR)\n- ARB: block AT1 receptor; hyperkalemia; fetopathy; less angioedema vs ACEi\n- Aliskiren: blocks renin → ↓ Ang I; do NOT combine with ACEi/ARB (table)\n\nCCB\n- DHP (-dipine): vascular smooth muscle → vasodilation; reflex tachycardia; hypotension; gingival hyperplasia; nifedipine note: higher MI chance per table\n- Non‑DHP (verapamil/diltiazem): heart → ↓ HR/AV conduction/contractility; caution with beta blockers; moderate CYP3A4 inhibition\n\nDIURETICS (Nephron)\n- Loop: NKCC2; ototoxicity; dehydration; ↓ Ca/Mg/K\n- Thiazide: NCC (DCT); ↑ Ca reabsorption; ↓ K/Mg; ↑ uric acid/glucose/lipids; QT prolongation from hypokalemia\n- ENaC blockers (amiloride/triamterene): late DCT/CD; BBW hyperkalemia\n- MR antagonists (spironolactone/eplerenone): block aldosterone receptor; hyperkalemia; spironolactone → gynecomastia\n\nSYMPATHETIC\n- Beta blockers: β1 ↓ HR; β2 blockade → bronchoconstriction + prolonged hypoglycemia; sudden stop → rebound tachy/HTN; nebivolol → ↑ NO\n- Alpha‑1 blockers (-osin): first dose effect/orthostatic hypotension; CHF risk as monotherapy; useful in HTN + BPH\n- Alpha‑2 agonists: ↓ NE release; sedation; rebound HTN if abrupt stop; methyldopa favored in pregnancy (table)`;
+}
+
+function escapeHtml(s){
+  return String(s ?? "")
+    .replaceAll('&','&amp;')
+    .replaceAll('<','&lt;')
+    .replaceAll('>','&gt;')
+    .replaceAll('"','&quot;')
+    .replaceAll("'",'&#039;');
+}
+
+// =============================
+// SELF TESTS (run on load)
+// =============================
+function assert(cond, msg){
+  if(!cond) throw new Error(msg);
+}
+
+function runSelfTests(){
+  // 1) FACTS should not contain undefined keys and must include mra.pathway (regression for prior syntax error)
+  assert(FACTS.mra && typeof FACTS.mra.pathway === 'string', 'FACTS.mra.pathway missing');
+  assert(typeof FACTS.mra.moa === 'string', 'FACTS.mra.moa missing');
+
+  // 2) generateQuestions should return non-empty bank
+  const qs = generateQuestions('all', 2);
+  assert(Array.isArray(qs) && qs.length > 50, 'Question bank too small');
+
+  // 3) All mcq/vignette must have answerIndex defined and in range
+  const needsAnswer = qs.filter(q => q.type === 'mcq' || q.type === 'vignette');
+  for(const q of needsAnswer){
+    assert(Number.isInteger(q.answerIndex), `Missing answerIndex for: ${q.type} ${q.q?.slice?.(0,60)}`);
+    assert(Array.isArray(q.options) && q.options.length >= 2, 'Options missing');
+    assert(q.answerIndex >= 0 && q.answerIndex < q.options.length, 'answerIndex out of range');
+  }
+
+  // 4) Path cards exist
+  assert(qs.some(q=>q.type==='path'), 'No pathway cards generated');
+
+  return {ok:true, msg:`Self-tests passed: ${qs.length} questions generated.`};
+}
+
+function showSelfTestResult(){
+  const el = document.getElementById('selftest');
+  try{
+    const r = runSelfTests();
+    el.innerHTML = `<span class='tag ok'>OK</span> ${escapeHtml(r.msg)} (Check console for details.)`;
+    console.log('[SELFTEST]', r.msg);
+  }catch(e){
+    el.innerHTML = `<span class='tag bad'>FAIL</span> ${escapeHtml(e.message)} (Open DevTools console.)`;
+    console.error('[SELFTEST FAIL]', e);
+  }
+}
+
+// initial state
+resetAll();
+showSelfTestResult();
+</script>
+</body>
+</html>
